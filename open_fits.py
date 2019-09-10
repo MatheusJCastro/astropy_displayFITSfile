@@ -39,13 +39,12 @@ print('Stdev:', np.std(image_data))  # standard deviation of image
 plt.figure(figsize=(12, 4))
 plt.subplot(131)
 plt.imshow(image_data, cmap='gray', origin='lower')  # the primary image, by default, is set no MinMaxInterval
+plt.title("Primary")
+# plt.colorbar()  # if you want to add a color bar on your subplot
 
 # OPTIONS FOR DISPLAY IMAGES
 # norm=LogNorm() --> display in a logarithmic color scale
 # norm=ImageNormalize(image_data, interval=ZScaleInterval()) --> display in zscale
-
-plt.title("Primary")
-# plt.colorbar()  # if you want to add a color bar on your subplot
 
 plt.subplot(132)
 plt.imshow(image_data, cmap='gray', origin='lower', norm=ImageNormalize(image_data, interval=ZScaleInterval()))
