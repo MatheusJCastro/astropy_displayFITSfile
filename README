@@ -1,0 +1,10 @@
+This is a simple program that open a .fits file with Astropy.
+
+Some functions:
+- Open fits file and display it;
+- Plot this fits on a Zscale (Iraf based);
+- Plot the extension 1;
+	Obs: on program the name for extension 1 is "Masked Pixel" because the .fits I used had
+	a mask for pixels on extension 1.
+- Print the Minimum, Maximum, Mean and Standard Deviaton of the image;
+- You can modify the program for show, instead of zscale, the logarithmic color scale. The program is commented instructing how to do this.
