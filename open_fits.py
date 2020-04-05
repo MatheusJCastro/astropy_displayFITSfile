@@ -29,7 +29,7 @@ print(head)
 head = np.array(repr(image_file[0].header))  # example of print all header
 print(head)
 print(type(head))
-#np.savetxt("Header_{}.txt".format(image[:-5]), [head], fmt="%s")  # save header on a .txt file
+np.savetxt("Header_{}.txt".format(image[:-5]), [head], fmt="%s")  # save header on a .txt file
 print(image_file.info())  # print some useful information about your fits
 
 image_file.close()
