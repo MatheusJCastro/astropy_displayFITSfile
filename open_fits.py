@@ -1,8 +1,8 @@
 ###########################################
 # Display .FITS file                      #
 # Matheus J. Castro                       #
-# Version 2.0                             #
-# Last Modification: 09/09/2019           #
+# Version 2.1                             #
+# Last Modification: 05/04/2020           #
 ###########################################
 
 # learn more at: http://learn.astropy.org/FITS-images.html
@@ -12,20 +12,24 @@ import numpy as np
 import matplotlib.pyplot as plt
 from astropy.io import fits
 from matplotlib.colors import LogNorm
-from astropy.visualization import ZScaleInterval, ImageNormalize, MinMaxInterval
+from astropy.visualization import ZScaleInterval, ImageNormalize, MinMaxInterval, PowerStretch
 
 image = 'm31_proc.fits'  # name for your fits file
 image_file = fits.open(image)
 image_data = image_file[0].data  # get the extension 0 of your fits
                                  # normally, the image is on first extension
-image_mask = image_file[1].data  # get the extension 1, on my case, the mask of pixel for data reduction
+if len(image_file) > 1:
+    image_mask = image_file[1].data  # get the extension 1, on my case, the mask of pixel for data reduction
+    mask = 3
+else:
+    mask = 2
 
 head = image_file[0].header["DATE"]  # example of print one data from fits header
 print(head)
 head = np.array(repr(image_file[0].header))  # example of print all header
 print(head)
 print(type(head))
-np.savetxt("Header_{}.txt".format(image[:-5]), [head], fmt="%s")  # save header on a .txt file
+#np.savetxt("Header_{}.txt".format(image[:-5]), [head], fmt="%s")  # save header on a .txt file
 print(image_file.info())  # print some useful information about your fits
 
 image_file.close()
@@ -37,7 +41,7 @@ print('Stdev:', np.std(image_data))  # standard deviation of image
                                      # from numpy
 
 plt.figure(figsize=(12, 4))
-plt.subplot(131)
+plt.subplot(1, mask, 1)
 plt.imshow(image_data, cmap='gray', origin='lower')  # the primary image, by default, is set no MinMaxInterval
 plt.title("Primary")
 # plt.colorbar()  # if you want to add a color bar on your subplot
@@ -46,13 +50,16 @@ plt.title("Primary")
 # norm=LogNorm() --> display in a logarithmic color scale
 # norm=ImageNormalize(image_data, interval=ZScaleInterval()) --> display in zscale
 
-plt.subplot(132)
-plt.imshow(image_data, cmap='gray', origin='lower', norm=ImageNormalize(image_data, interval=ZScaleInterval()))
+plt.subplot(1, mask, 2)
+plt.imshow(image_data, cmap='gray', origin='lower', norm=ImageNormalize(image_data, interval=ZScaleInterval()))#
+            # , stretch=PowerStretch(5)))  # add other type of stretch on the image
+                                           # (need to be inside of ImageNormalize() function)
             # print the zscale image
 plt.title("Zscale")
 
-plt.subplot(133)
-plt.imshow(image_mask, cmap='gray', origin='lower')  # print the pixel mask
-plt.title("Masked Pixels")
+if mask == 3:
+    plt.subplot(133)
+    plt.imshow(image_mask, cmap='gray', origin='lower')  # print the pixel mask
+    plt.title("Masked Pixels")
 
 plt.show()
